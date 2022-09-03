@@ -9,7 +9,10 @@
         <input type="number" v-model="formData.latitude"/>
         <label>Longitude</label>
         <input type="number" v-model="formData.longitude"/>
-        <button v-on:click="onSubmit">Submit</button>
+        <button v-on:click="onSubmit"
+            :disabled="!(formData.name && formData.description && formData.latitude && formData.longitude)"
+            
+        >Submit</button>
 
     </div>
 </template>
@@ -25,6 +28,11 @@ export default {
                 latitude: '',
                 longitude: ''
             }
+        }
+    },
+    computed: {
+        buttonDisabled() {
+            return 
         }
     },
     methods: {
