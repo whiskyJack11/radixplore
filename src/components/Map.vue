@@ -1,15 +1,13 @@
 <template>
     <div class="map">
-        <h2>Map</h2>
-        <div id="map">
-            
+        <div id="map">  
         </div>
     </div>
 </template>
 <script>
 export default {
     name: 'map',
-    props: ["formData"],
+    props: ["update", "formData"],
     data() {
         return {
             map: null,
@@ -18,12 +16,25 @@ export default {
     },
     computed: {
         latLng() {
-            return [this.formData.latitude, this.formData.longitude]
+            if (this.formData.latitude && this.formData.longitude) {
+                return [this.formData.latitude, this.formData.longitude]
+            } else {
+                null
+            }
         }
     },
     watch: {
         latLng() {
-            this.setLocation()
+            console.log(this.latlng)
+            if (this.latLng == null) {
+                if (this.marker != null) {
+                    this.map.removeLayer(this.marker)
+                    this.marker = null;
+                }
+                this.map.setView(['0.0','0.0'], 0)
+            } else {
+                this.setLocation();
+            }
         }
     },
     methods: {
@@ -33,10 +44,39 @@ export default {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap'
             }).addTo(this.map);
+
+            this.map.setGeocoder('Nominatim', {});
+		    let searchControl = L.esri.Geocoding.geosearch().addTo(this.map);
+            searchControl.on('results', this.onSearchResult);
+
+            // const response  = this.map.addControl(L.control.search());
+            // console.log(response);
+        },
+        onSearchResult(data) {
+            try {
+                let location = data.results[0];
+                this.update(
+                    {
+                    name: location.properties.PlaceName,
+                    description: location.properties.LongLabel,
+                    latitude: location.latlng.lat.toFixed(2),
+                    longitude: location.latlng.lng.toFixed(2)
+                }
+                );
+            } catch(error) {
+                this.update(
+                    {
+                        name: '',
+                        description: '',
+                        latitude: '',
+                        longitude: ''
+                    }
+                )
+            }
+            
         },
         setLocation() {
             if (this.marker == null) {
-                console.log(this.formData.name + '<br>' + this.formData.description)
                 this.marker = L.marker(this.latLng).addTo(this.map)
             } else {
                 this.marker.setLatLng(this.latLng).update();
@@ -44,7 +84,7 @@ export default {
 
             this.marker.bindPopup(this.formData.name + '<br>' + this.formData.description)
 
-            this.map.setView(this.latLng);
+            this.map.setView(this.latLng, 13);
         }
     },
 
@@ -55,12 +95,12 @@ export default {
 </script>
 <style scoped>
 #map {
-    height: 300px;
-    padding: 1rem;
+    height: 100vh;
+    /* padding: 1rem; */
 }
 .map {
     
-    padding: 1rem;;
+    /* padding: 1rem;; */
 }
 
 </style>

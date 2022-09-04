@@ -11,10 +11,10 @@ export default {
   data() {
     return {
       formData: {
-        name: 'Test',
-        description: 'User',
-        latitude: '50.0',
-        longitude: '90.0'
+        name: '',
+        description: '',
+        latitude: '',
+        longitude: ''
       }
     }
   },
@@ -29,12 +29,14 @@ export default {
 
 <template>
   <div class="app" >
-    <div class="row">
-      <div class="col-lg-6">
-        <Form :update="updateFormData"/>
+    <div class="row" style="--bs-gutter-x: 0">
+      <div class="col-lg-4 abc">
+        <img class="logo" src="./assets/logo-x.png" />
+        <hr style="margin: 0"/>
+        <Form :update="updateFormData" :formData="formData"/>
       </div>
-      <div class="col-lg-6">
-        <Map :formData="formData"/>
+      <div class="col-lg-8">
+        <Map :update="updateFormData" :formData="formData"/>
        </div>
     </div>
   </div>
@@ -48,6 +50,7 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
+  
 }
 
 @media (min-width: 1024px) {
@@ -61,7 +64,9 @@ header {
     margin: 0 2rem 0 0;
   }
   .app {
-    padding: 1rem;
+    /* padding: 1rem; */
+    /* background: rgb(233, 250, 208); */
+    height: 100vh;
   }
 
   header .wrapper {
@@ -69,5 +74,14 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
+}
+.logo {
+      width: 100%;
+      padding: 1.5rem 6rem;
+}
+.abc {
+  overflow-y: auto;
+    height: 100vh;
+    overflow-x: hidden;
 }
 </style>
