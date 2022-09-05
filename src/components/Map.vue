@@ -96,11 +96,6 @@ export default {
 <style scoped>
 #map {
     height: 100vh;
-    /* padding: 1rem; */
-}
-.map {
-    
-    /* padding: 1rem;; */
 }
 
 </style>

@@ -67,8 +67,6 @@ input {
     padding: 0.4rem 0.8rem;
     font-family: monospace;
 }
-
-
 .button-9 {
   appearance: button;
   backface-visibility: hidden;
