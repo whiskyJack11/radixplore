@@ -1,4 +1,4 @@
-# radix
+# This is a small application which includes the implementation of leaflet maps. It includes basic searching  of geographical locations and pin point on the map.
 
 This template should help get you started developing with Vue 3 in Vite.
 
